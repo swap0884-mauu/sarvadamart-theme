@@ -61,19 +61,58 @@
           {%- endif -%}
         </div>
       {%- endif -%}
-      <div class="drawer__header">
-        <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
-        <button
-          class="drawer__close"
-          type="button"
-          onclick="this.closest('cart-drawer').close()"
-          aria-label="{{ 'accessibility.close' | t }}"
-        >
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
-        </button>
-      </div>
+      <div class="drawer__header sm-cart-header">
+  <div class="sm-cart-header__top">
+    <div class="sm-cart-header__title">
+      <h2 class="drawer__heading">
+        {{ 'sections.cart.title' | t }}
+      </h2>
+
+      <p class="sm-cart-header__count">
+        {{ cart.item_count }}
+        {% if cart.item_count == 1 %}
+          Item
+        {% else %}
+          Items
+        {% endif %}
+      </p>
+    </div>
+
+    <button
+      class="drawer__close"
+      type="button"
+      onclick="this.closest('cart-drawer').close()"
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      <span class="svg-wrapper">
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </span>
+    </button>
+  </div>
+
+  {% assign free_shipping_threshold = 49900 %}
+
+  {% if cart.total_price < free_shipping_threshold %}
+    {% assign remaining_amount = free_shipping_threshold | minus: cart.total_price %}
+
+    <div class="sm-cart-free-shipping">
+      <p class="sm-cart-free-shipping__text">
+        🚚 Add
+        <strong>{{ remaining_amount | money }}</strong>
+        more to unlock FREE Shipping
+      </p>
+    </div>
+
+  {% else %}
+
+    <div class="sm-cart-free-shipping sm-cart-free-shipping--success">
+      <p class="sm-cart-free-shipping__text">
+        🎉 Congratulations! You unlocked FREE Shipping.
+      </p>
+    </div>
+
+  {% endif %}
+</div>
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"
