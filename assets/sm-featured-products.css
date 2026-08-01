@@ -1,0 +1,312 @@
+.sm-featured-products {
+  background: #ffffff;
+  padding: 48px 0;
+}
+
+.sm-featured-products__header {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.sm-featured-products__heading-wrapper {
+  max-width: 700px;
+}
+
+.sm-featured-products__subtitle {
+  color: #2e7d32;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.sm-featured-products__heading {
+  color: #1f1f1f;
+  font-size: clamp(2.8rem, 4vw, 4.2rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.sm-featured-products__view-all,
+.sm-featured-products__add-button {
+  background-color: #2e7d32;
+  border-color: #2e7d32;
+  border-radius: 8px;
+  color: #ffffff;
+  transition: background-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+}
+
+.sm-featured-products__view-all:hover,
+.sm-featured-products__add-button:hover:not(:disabled) {
+  background-color: #1f6423;
+  border-color: #1f6423;
+  box-shadow: 0 8px 18px rgba(46, 125, 50, 0.22);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.sm-featured-products__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sm-featured-products__item {
+  max-width: none;
+  width: auto;
+}
+
+.sm-featured-products__card {
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+.sm-featured-products__card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+}
+
+.sm-featured-products__media {
+  background: #f8f8f8;
+  overflow: hidden;
+  position: relative;
+}
+
+.sm-featured-products__image-link {
+  display: block;
+}
+
+.sm-featured-products__image,
+.sm-featured-products__placeholder {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  transition: transform 300ms ease;
+  width: 100%;
+}
+
+.sm-featured-products__card:hover .sm-featured-products__image {
+  transform: scale(1.06);
+}
+
+.sm-featured-products__sale-badge {
+  background: #e53935;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  left: 12px;
+  line-height: 1.2;
+  padding: 6px 9px;
+  position: absolute;
+  top: 12px;
+  z-index: 1;
+}
+
+.sm-featured-products__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 1;
+}
+
+.sm-featured-products__icon-button {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 50%;
+  color: #1f1f1f;
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  padding: 0;
+  text-decoration: none;
+  transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease, transform 300ms ease;
+  width: 38px;
+}
+
+.sm-featured-products__icon-button:hover {
+  background: #2e7d32;
+  border-color: #2e7d32;
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.sm-featured-products__icon-button svg {
+  height: 19px;
+  width: 19px;
+}
+
+.sm-featured-products__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.sm-featured-products__vendor {
+  color: #777777;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.sm-featured-products__title {
+  color: #1f1f1f;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.sm-featured-products__title a {
+  color: inherit;
+  display: -webkit-box;
+  overflow: hidden;
+  text-decoration: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.sm-featured-products__title a:hover {
+  color: #2e7d32;
+}
+
+.sm-featured-products__rating {
+  align-items: center;
+  display: flex;
+  font-size: 1.2rem;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.sm-featured-products__stars {
+  color: #ffc107;
+  letter-spacing: 0.06em;
+}
+
+.sm-featured-products__price {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sm-featured-products__sale-price {
+  color: #2e7d32;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.sm-featured-products__compare-price {
+  color: #8a8a8a;
+  font-size: 1.3rem;
+}
+
+.sm-featured-products__discount {
+  color: #2e7d32;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.sm-featured-products__stock {
+  color: #2e7d32;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 10px 0 16px;
+}
+
+.sm-featured-products__stock--sold-out {
+  color: #e53935;
+}
+
+.sm-featured-products__form {
+  display: block;
+  margin-top: auto;
+}
+
+.sm-featured-products__add-button {
+  min-height: 44px;
+  width: 100%;
+}
+
+.sm-featured-products__add-button:disabled {
+  background: #b5b5b5;
+  border-color: #b5b5b5;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
+.sm-featured-products__empty {
+  background: #f8f8f8;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  color: #555555;
+  margin: 0;
+  padding: 28px;
+  text-align: center;
+}
+
+.sm-featured-products :focus-visible {
+  outline: 3px solid #2e7d32;
+  outline-offset: 3px;
+}
+
+@media screen and (min-width: 750px) {
+  .sm-featured-products {
+    padding: 64px 0;
+  }
+
+  .sm-featured-products__grid {
+    gap: 20px;
+  }
+
+  .sm-featured-products__content {
+    padding: 18px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .sm-featured-products__grid {
+    gap: 24px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-featured-products *,
+  .sm-featured-products *::before,
+  .sm-featured-products *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.sm-featured-products__title a {
+  display: -webkit-box;
+  line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

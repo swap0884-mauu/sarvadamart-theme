@@ -1,0 +1,267 @@
+{{ 'sm-featured-products.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'sm-featured-products.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign featured_collection = section.settings.collection
+-%}
+<section
+  id="SMFeaturedProducts-{{ section.id }}"
+  class="sm-featured-products color-{{ section.settings.color_scheme }} gradient"
+  data-padding-top="{{ section.settings.padding_top }}"
+  data-padding-bottom="{{ section.settings.padding_bottom }}"
+  aria-labelledby="SMFeaturedProductsHeading-{{ section.id }}"
+>
+  <div class="page-width">
+    <header class="sm-featured-products__header">
+      <div class="sm-featured-products__heading-wrapper">
+        {%- if section.settings.subtitle != blank -%}
+          <p class="sm-featured-products__subtitle">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 id="SMFeaturedProductsHeading-{{ section.id }}" class="sm-featured-products__heading inline-richtext">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_button and section.settings.button_label != blank -%}
+    <a
+      class="sm-featured-products__view-all button button--secondary"
+      href="{% if section.settings.button_link != blank %}{{ section.settings.button_link }}{% elsif featured_collection != blank %}{{ featured_collection.url }}{% else %}#{% endif %}"
+    >
+      {{ section.settings.button_label | escape }}
+    </a>
+  {%- endif -%}
+</header>
+
+{%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+  <ul class="sm-featured-products__grid grid product-grid grid--2-col-tablet-down grid--2-col-tablet grid--4-col-desktop" role="list">
+    {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
+      {%- liquid
+        assign variant = product.selected_or_first_available_variant
+        assign compare_price = variant.compare_at_price
+        assign discount_percentage = 0
+        assign image_alt = product.featured_media.alt | default: product.title
+        assign product_form_id = 'SMFeaturedProductsForm-' | append: section.id | append: '-' | append: product.id
+
+        if compare_price > variant.price
+          assign discount_percentage = compare_price | minus: variant.price | times: 100.0 | divided_by: compare_price | round
+        endif
+      -%}
+
+      <li class="grid__item sm-featured-products__item">
+        <article class="sm-featured-products__card">
+          <div class="sm-featured-products__media">
+            {%- if section.settings.show_sale_badge and discount_percentage > 0 -%}
+              <span class="sm-featured-products__sale-badge">Save {{ discount_percentage }}%</span>
+            {%- endif -%}
+
+            <div class="sm-featured-products__actions">
+              <button
+                class="sm-featured-products__icon-button"
+                type="button"
+                aria-label="Add {{ product.title | escape }} to wishlist"
+                aria-pressed="false"
+              >
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M20.8 4.8a5.5 5.5 0 0 0-7.8 0L12 5.9l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.5l7.8-7.8 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+                </svg>
+              </button>
+
+              <a class="sm-featured-products__icon-button" href="{{ product.url }}" aria-label="Quick view {{ product.title | escape }}">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                  <circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                </svg>
+              </a>
+            </div>
+
+            <a class="sm-featured-products__image-link" href="{{ product.url }}" aria-label="View {{ product.title | escape }}">
+              {%- if product.featured_media != blank -%}
+                {{
+                  product.featured_media.preview_image
+                  | image_url: width: 720
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '240, 360, 480, 600, 720',
+                    sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 50vw',
+                    class: 'sm-featured-products__image',
+                    alt: image_alt
+                }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg sm-featured-products__placeholder' }}
+              {%- endif -%}
+            </a>
+          </div>
+
+          <div class="sm-featured-products__content">
+            {%- if section.settings.show_vendor and product.vendor != blank -%}
+              <p class="sm-featured-products__vendor">{{ product.vendor | escape }}</p>
+            {%- endif -%}
+
+            <h3 class="sm-featured-products__title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h3>
+
+            {%- if section.settings.show_rating -%}
+              <div class="sm-featured-products__rating" role="img" aria-label="Product rating unavailable">
+                <span class="sm-featured-products__stars" aria-hidden="true">★★★★★</span>
+                <span class="visually-hidden">Product rating unavailable</span>
+              </div>
+            {%- endif -%}
+
+            <div class="sm-featured-products__price">
+              <span class="sm-featured-products__sale-price">{{ variant.price | money }}</span>
+              {%- if compare_price > variant.price -%}
+                <s class="sm-featured-products__compare-price">{{ compare_price | money }}</s>
+                <span class="sm-featured-products__discount">-{{ discount_percentage }}%</span>
+              {%- endif -%}
+            </div>
+
+            <p class="sm-featured-products__stock {% unless variant.available %}sm-featured-products__stock--sold-out{% endunless %}">
+              {%- if variant.available -%}
+                In stock
+              {%- else -%}
+                Sold out
+              {%- endif -%}
+            </p>
+
+            <product-form data-section-id="{{ section.id }}" class="sm-featured-products__form">
+              {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ variant.id }}"
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+
+                <button
+                  class="sm-featured-products__add-button button button--secondary"
+                  type="submit"
+                  name="add"
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  <span>
+                    {%- if variant.available -%}
+                      Add to cart
+                    {%- else -%}
+                      Sold out
+                    {%- endif -%}
+                  </span>
+                </button>
+              {%- endform -%}
+            </product-form>
+          </div>
+        </article>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+  <p class="sm-featured-products__empty">Select a collection to display products.</p>
+{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SM Featured Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Handpicked for you"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show view all button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View All Products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "SM Featured Products"
+    }
+  ]
+}
+{% endschema %}

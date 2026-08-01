@@ -1,0 +1,161 @@
+{{ 'sm-cart-drawer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sm-cart-drawer.js' | asset_url }}" defer="defer"></script>
+
+<sm-cart-drawer id="SmCartDrawer-{{ section.id }}" class="sm-drawer" data-section-id="{{ section.id }}" role="dialog" aria-modal="true" aria-label="Shopping Cart" aria-hidden="true">
+  <div class="sm-drawer__overlay" data-sm-drawer-overlay></div>
+  <div class="sm-drawer__container">
+    <header class="sm-drawer__header">
+      <div class="sm-drawer__header-title">
+        <h2 class="sm-drawer__heading">Shopping Cart</h2>
+        <span class="sm-drawer__count-badge" data-sm-cart-count>{{ cart.item_count }}</span>
+      </div>
+      <button type="button" class="sm-drawer__close" data-sm-drawer-close aria-label="Close">
+        <svg class="sm-drawer__close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <div class="sm-drawer__body" data-sm-drawer-body>
+      <div class="sm-drawer__error-message" data-sm-error-message aria-live="polite" hidden></div>
+      
+      {%- if cart.item_count > 0 -%}
+        <div class="sm-drawer__items" data-sm-cart-items>
+          {%- for item in cart.items -%}
+            <article class="sm-cart-item" data-line-item-key="{{ item.key }}" data-line-index="{{ forloop.index }}">
+              <div class="sm-cart-item__media">
+                {%- if item.image -%}
+                  <img
+                    class="sm-cart-item__image"
+                    src="{{ item.image | image_url: width: 180 }}"
+                    alt="{{ item.image.alt | escape }}"
+                    loading="lazy"
+                    width="90"
+                    height="90"
+                  >
+                {%- else -%}
+                  <div class="sm-cart-item__image-placeholder"></div>
+                {%- endif -%}
+              </div>
+
+              <div class="sm-cart-item__details">
+                <div class="sm-cart-item__header">
+                  <a href="{{ item.url }}" class="sm-cart-item__title">{{ item.product.title | escape }}</a>
+                  <button type="button" class="sm-cart-item__remove" data-sm-cart-remove data-key="{{ item.key }}" aria-label="Remove item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                {%- if item.product.has_only_default_variant == false or item.properties.size > 0 or item.selling_plan_allocation != nil -%}
+                  <div class="sm-cart-item__options">
+                    {%- if item.product.has_only_default_variant == false -%}
+                      {%- for option in item.options_with_values -%}
+                        <span class="sm-cart-item__option">{{ option.name }}: {{ option.value }}</span>
+                      {%- endfor -%}
+                    {%- endif -%}
+
+                    {%- for property in item.properties -%}
+                      {%- assign property_first_char = property.first | slice: 0 -%}
+                      {%- if property.last != blank and property_first_char != '_' -%}
+                        <span class="sm-cart-item__option">
+                          {{ property.first }}:
+                          {%- if property.last contains '/uploads/' -%}
+                            <a href="{{ property.last }}" class="link" target="_blank">{{ property.last | split: '/' | last }}</a>
+                          {%- else -%}
+                            {{ property.last }}
+                          {%- endif -%}
+                        </span>
+                      {%- endif -%}
+                    {%- endfor -%}
+
+                    {%- if item.selling_plan_allocation != nil -%}
+                      <span class="sm-cart-item__option">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                <div class="sm-cart-item__price-wrapper">
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <span class="sm-cart-item__price sm-cart-item__price--sale">{{ item.final_line_price | money }}</span>
+                    <s class="sm-cart-item__price sm-cart-item__price--original">{{ item.original_line_price | money }}</s>
+                  {%- else -%}
+                    <span class="sm-cart-item__price">{{ item.original_line_price | money }}</span>
+                  {%- endif -%}
+                </div>
+
+                <div class="sm-cart-item__actions">
+                  <div class="sm-quantity-selector">
+                    <button type="button" class="sm-quantity-selector__button" data-sm-quantity-decrease data-key="{{ item.key }}" aria-label="Decrease quantity">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                    </button>
+                    <input
+                      type="number"
+                      class="sm-quantity-selector__input"
+                      data-sm-quantity-input
+                      data-key="{{ item.key }}"
+                      value="{{ item.quantity }}"
+                      min="0"
+                      aria-label="Quantity"
+                    >
+                    <button type="button" class="sm-quantity-selector__button" data-sm-quantity-increase data-key="{{ item.key }}" aria-label="Increase quantity">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="sm-drawer__empty" data-sm-cart-empty>
+          <div class="sm-drawer__empty-icon-wrapper">
+            <svg class="sm-drawer__empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <p class="sm-drawer__empty-text">Your cart is empty</p>
+          <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="sm-drawer__continue-button">
+            Continue Shopping
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <footer class="sm-drawer__footer" data-sm-drawer-footer>
+        <div class="sm-drawer__subtotal-wrapper">
+          <span class="sm-drawer__subtotal-label">Subtotal</span>
+          <span class="sm-drawer__subtotal-price" data-sm-cart-subtotal>{{ cart.total_price | money }}</span>
+        </div>
+        <form action="{{ routes.cart_url }}" method="post" id="SmCartDrawer-Form-{{ section.id }}">
+          <button type="submit" name="checkout" class="sm-drawer__checkout-button">
+            <span>Checkout</span>
+          </button>
+        </form>
+      </footer>
+    {%- endif -%}
+  </div>
+</sm-cart-drawer>
+
+{% schema %}
+{
+  "name": "SM Cart Drawer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "SM Cart Drawer"
+    }
+  ]
+}
+{% endschema %}

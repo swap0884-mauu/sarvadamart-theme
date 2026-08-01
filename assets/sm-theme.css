@@ -1,0 +1,127 @@
+/* =========================
+   SarvadaMart Premium Header
+========================= */
+
+.sm-header{
+    background:#ffffff;
+    border-bottom:1px solid #e5e5e5;
+    position:sticky;
+    top:0;
+    z-index:999;
+    padding:12px 0;
+}
+
+.sm-header-wrapper{
+    max-width:1400px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:25px;
+}
+
+/* Logo */
+
+.sm-logo{
+    flex-shrink:0;
+}
+
+.sm-logo img{
+    width:150px;
+    height:auto;
+    display:block;
+}
+
+/* Navigation */
+
+.sm-nav{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.sm-nav a{
+    text-decoration:none;
+    color:#222;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.sm-nav a:hover{
+    color:#0b6b3a;
+}
+
+/* Search */
+
+.sm-search{
+    flex:1;
+    max-width:420px;
+}
+
+.sm-search form{
+    display:flex;
+}
+
+.sm-search input{
+    width:100%;
+    height:46px;
+    border:2px solid #0b6b3a;
+    border-right:none;
+    border-radius:8px 0 0 8px;
+    padding:0 15px;
+    outline:none;
+}
+
+.sm-search button{
+    width:55px;
+    border:none;
+    background:#0b6b3a;
+    color:#fff;
+    border-radius:0 8px 8px 0;
+    cursor:pointer;
+}
+
+/* Icons */
+
+.sm-icons{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.sm-icons a{
+    text-decoration:none;
+    color:#222;
+    font-weight:600;
+    transition:.3s;
+}
+
+.sm-icons a:hover{
+    color:#0b6b3a;
+}
+
+/* Mobile */
+
+@media(max-width:991px){
+
+.sm-header-wrapper{
+    flex-direction:column;
+    gap:15px;
+}
+
+.sm-nav{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.sm-search{
+    width:100%;
+    max-width:100%;
+}
+
+.sm-icons{
+    justify-content:center;
+}
+
+}

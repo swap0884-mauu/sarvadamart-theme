@@ -1,0 +1,87 @@
+{% comment %}
+  SM Category Icons — Shopify OS 2.0 / Dawn compatible
+  Place this file at: sections/sm-category-icons.liquid
+{% endcomment %}
+
+{% style %}
+  #shopify-section-{{ section.id }} .smci { --smci-green: {{ section.settings.accent_color }}; --smci-bg: {{ section.settings.background }}; --smci-text: {{ section.settings.text_color }}; background: var(--smci-bg); color: var(--smci-text); padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; overflow: hidden; }
+  #shopify-section-{{ section.id }} .smci *, #shopify-section-{{ section.id }} .smci *:before, #shopify-section-{{ section.id }} .smci *:after { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} .smci__inner { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 3.2vw, 48px); }
+  #shopify-section-{{ section.id }} .smci__heading { margin: 0 0 24px; font-family: var(--font-heading-family, Arial, sans-serif); font-size: clamp(19px, 2vw, 28px); font-weight: 750; letter-spacing: -.025em; line-height: 1.15; }
+  #shopify-section-{{ section.id }} .smci__list { display: grid; grid-template-columns: repeat({{ section.settings.desktop_columns }}, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 26px); }
+  #shopify-section-{{ section.id }} .smci__item { display: block; min-width: 0; color: inherit; text-align: center; text-decoration: none; }
+  #shopify-section-{{ section.id }} .smci__image-wrap { width: min(100%, {{ section.settings.icon_size }}px); aspect-ratio: 1; margin: 0 auto 11px; overflow: hidden; border: 1px solid rgba(0, 95, 67, .11); border-radius: 50%; background: #edf6f1; box-shadow: 0 4px 12px rgba(18, 64, 47, .06); transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+  #shopify-section-{{ section.id }} .smci__image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .32s ease; }
+  #shopify-section-{{ section.id }} .smci__fallback { display: grid; width: 100%; height: 100%; place-items: center; color: var(--smci-green); font-family: var(--font-heading-family, Georgia, serif); font-size: clamp(22px, 3vw, 38px); font-weight: 800; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .smci__title { display: block; overflow: hidden; color: var(--smci-text); font-family: var(--font-body-family, Arial, sans-serif); font-size: 13px; font-weight: 700; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; transition: color .2s ease; }
+  #shopify-section-{{ section.id }} .smci__item:hover .smci__image-wrap, #shopify-section-{{ section.id }} .smci__item:focus-visible .smci__image-wrap { border-color: var(--smci-green); box-shadow: 0 9px 20px rgba(0, 111, 79, .2); transform: translateY(-5px); }
+  #shopify-section-{{ section.id }} .smci__item:hover .smci__image { transform: scale(1.08); }
+  #shopify-section-{{ section.id }} .smci__item:hover .smci__title, #shopify-section-{{ section.id }} .smci__item:focus-visible .smci__title { color: var(--smci-green); }
+  #shopify-section-{{ section.id }} .smci__item:focus-visible { outline: 2px solid var(--smci-green); outline-offset: 5px; border-radius: 4px; }
+  @media screen and (max-width: 749px) { #shopify-section-{{ section.id }} .smci { padding-top: {{ section.settings.mobile_padding_top }}px; padding-bottom: {{ section.settings.mobile_padding_bottom }}px; } #shopify-section-{{ section.id }} .smci__inner { padding-right: 0; } #shopify-section-{{ section.id }} .smci__heading { margin-bottom: 17px; padding-right: 16px; } #shopify-section-{{ section.id }} .smci__list { display: flex; gap: 14px; padding-right: 16px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline mandatory; scrollbar-width: none; } #shopify-section-{{ section.id }} .smci__list::-webkit-scrollbar { display: none; } #shopify-section-{{ section.id }} .smci__item { width: clamp(74px, 22vw, 98px); flex: 0 0 clamp(74px, 22vw, 98px); scroll-snap-align: start; } #shopify-section-{{ section.id }} .smci__image-wrap { margin-bottom: 8px; } #shopify-section-{{ section.id }} .smci__title { font-size: 11px; } }
+  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .smci__image-wrap, #shopify-section-{{ section.id }} .smci__image { transition: none; } }
+{% endstyle %}
+
+<section class="smci" aria-labelledby="SMCategoryIcons-{{ section.id }}">
+  <div class="smci__inner">
+    {% if section.settings.heading != blank %}<h2 class="smci__heading" id="SMCategoryIcons-{{ section.id }}">{{ section.settings.heading }}</h2>{% endif %}
+    <div class="smci__list" role="list">
+      {% for block in section.blocks %}
+        {% liquid
+          assign target_collection = block.settings.collection
+          assign image = block.settings.image | default: target_collection.featured_image
+          assign title = block.settings.title | default: target_collection.title | default: 'Category'
+          assign item_url = target_collection.url | default: '#'
+        %}
+        <a class="smci__item" href="{{ item_url }}" role="listitem" {{ block.shopify_attributes }}>
+          <div class="smci__image-wrap">
+            {% if image != blank %}
+              {{ image | image_url: width: 360 | image_tag: class: 'smci__image', loading: 'lazy', widths: '100,140,180,240,360', sizes: '(max-width: 749px) 22vw, 140px', alt: title }}
+            {% else %}
+              <span class="smci__fallback" aria-hidden="true">{{ title | slice: 0 }}</span>
+            {% endif %}
+          </div>
+          <span class="smci__title">{{ title }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SM category icons",
+  "tag": "section",
+  "class": "section-sm-category-icons",
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "heading", "default": "Shop by category", "label": "Heading" },
+    { "type": "range", "id": "desktop_columns", "min": 4, "max": 10, "step": 1, "default": 8, "label": "Desktop columns" },
+    { "type": "range", "id": "icon_size", "min": 80, "max": 180, "step": 5, "default": 130, "label": "Maximum icon size" },
+    { "type": "color", "id": "background", "default": "#FFFFFF", "label": "Background" },
+    { "type": "color", "id": "text_color", "default": "#17221E", "label": "Text color" },
+    { "type": "color", "id": "accent_color", "default": "#00845D", "label": "Accent color" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "default": 36, "label": "Desktop top padding" },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "default": 36, "label": "Desktop bottom padding" },
+    { "type": "range", "id": "mobile_padding_top", "min": 0, "max": 80, "step": 4, "default": 24, "label": "Mobile top padding" },
+    { "type": "range", "id": "mobile_padding_bottom", "min": 0, "max": 80, "step": 4, "default": 24, "label": "Mobile bottom padding" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Icon image", "info": "Overrides the collection image." },
+        { "type": "text", "id": "title", "label": "Category title", "info": "Overrides the collection title." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SM category icons",
+      "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,182 @@
+{% comment %}
+  SM Header — Dawn / Shopify OS 2.0
+  Place this file at: sections/sm-header.liquid
+{% endcomment %}
+
+{% liquid
+  assign sm_menu = section.settings.menu
+  assign sm_logo_alt = section.settings.logo.alt | default: shop.name | escape
+  assign sm_wishlist_url = section.settings.wishlist_url | default: '/pages/wishlist'
+%}
+
+{% style %}
+  #shopify-section-{{ section.id }} { position: relative; z-index: 20; }
+  #shopify-section-{{ section.id }} .smh { --sm-green: {{ section.settings.green }}; --sm-green-dark: #075b42; --sm-ink: #17221e; --sm-muted: #66736d; --sm-line: #e5ebe8; --sm-bg: #ffffff; font-family: var(--font-body-family, Arial, sans-serif); color: var(--sm-ink); background: var(--sm-bg); }
+  #shopify-section-{{ section.id }} .smh *, #shopify-section-{{ section.id }} .smh *:before, #shopify-section-{{ section.id }} .smh *:after { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} .smh a { color: inherit; text-decoration: none; }
+  #shopify-section-{{ section.id }} .smh__announcement { min-height: 34px; display: flex; align-items: center; justify-content: center; padding: 7px 20px; background: var(--sm-green); color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .025em; text-align: center; }
+  #shopify-section-{{ section.id }} .smh__announcement p { margin: 0; }
+  #shopify-section-{{ section.id }} .smh__main { border-bottom: 1px solid var(--sm-line); background: var(--sm-bg); }
+  #shopify-section-{{ section.id }} .smh__wrap { max-width: 1440px; min-height: 76px; margin: 0 auto; padding: 12px clamp(16px, 3vw, 42px); display: grid; grid-template-columns: auto minmax(230px, 1fr) auto; align-items: center; column-gap: clamp(20px, 3vw, 48px); }
+  #shopify-section-{{ section.id }} .smh__brand { display: flex; align-items: center; min-width: 110px; }
+  #shopify-section-{{ section.id }} .smh__logo { display: block; width: {{ section.settings.logo_width }}px; max-width: 180px; height: auto; object-fit: contain; }
+  #shopify-section-{{ section.id }} .smh__wordmark { color: var(--sm-green); font-family: var(--font-heading-family, Georgia, serif); font-size: clamp(20px, 2vw, 27px); font-weight: 800; letter-spacing: -.05em; line-height: 1; }
+  #shopify-section-{{ section.id }} .smh__wordmark em { color: var(--sm-ink); font-style: normal; }
+  #shopify-section-{{ section.id }} .smh__search { position: relative; width: min(100%, 650px); justify-self: center; }
+  #shopify-section-{{ section.id }} .smh__search-form { display: flex; align-items: center; height: 46px; padding: 0 5px 0 15px; border: 1px solid #d4dfd9; border-radius: 8px; background: #f7faf8; transition: border-color .18s ease, box-shadow .18s ease; }
+  #shopify-section-{{ section.id }} .smh__search-form:focus-within { border-color: var(--sm-green); box-shadow: 0 0 0 3px rgba(0, 132, 93, .12); background: #fff; }
+  #shopify-section-{{ section.id }} .smh__search-input { width: 100%; height: 100%; border: 0; outline: 0; background: transparent; color: var(--sm-ink); font: inherit; font-size: 14px; }
+  #shopify-section-{{ section.id }} .smh__search-input::placeholder { color: #77847e; }
+  #shopify-section-{{ section.id }} .smh__search-submit { width: 36px; height: 36px; border: 0; border-radius: 6px; display: grid; place-items: center; flex: 0 0 auto; background: var(--sm-green); color: #fff; cursor: pointer; }
+  #shopify-section-{{ section.id }} .smh__search-submit:hover { background: var(--sm-green-dark); }
+  #shopify-section-{{ section.id }} .smh__svg { display: block; width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  #shopify-section-{{ section.id }} .smh__predictive { display: none; position: absolute; top: calc(100% + 7px); inset-inline: 0; max-height: min(520px, 60vh); overflow: auto; border: 1px solid var(--sm-line); border-radius: 9px; background: #fff; box-shadow: 0 16px 35px rgba(17, 47, 37, .16); }
+  #shopify-section-{{ section.id }} .smh__predictive.is-open { display: block; }
+  #shopify-section-{{ section.id }} .smh__search-status { padding: 14px 16px; color: var(--sm-muted); font-size: 13px; }
+  #shopify-section-{{ section.id }} .smh__result-heading { margin: 0; padding: 14px 16px 8px; color: var(--sm-muted); border-top: 1px solid var(--sm-line); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .smh__result-heading:first-child { border-top: 0; }
+  #shopify-section-{{ section.id }} .smh__result { display: flex; align-items: center; gap: 12px; padding: 8px 16px; font-size: 13px; }
+  #shopify-section-{{ section.id }} .smh__result:hover, #shopify-section-{{ section.id }} .smh__result:focus { background: #f2f8f5; outline: 0; }
+  #shopify-section-{{ section.id }} .smh__result-image { width: 42px; height: 42px; flex: 0 0 42px; object-fit: cover; border-radius: 5px; background: #edf3ef; }
+  #shopify-section-{{ section.id }} .smh__result-title { display: block; font-weight: 700; }
+  #shopify-section-{{ section.id }} .smh__result-price { display: block; margin-top: 2px; color: var(--sm-green); font-size: 12px; }
+  #shopify-section-{{ section.id }} .smh__view-all { display: block; margin: 8px 16px 14px; color: var(--sm-green); font-size: 12px; font-weight: 800; }
+  #shopify-section-{{ section.id }} .smh__tools { display: flex; align-items: center; justify-content: flex-end; gap: clamp(10px, 1.6vw, 22px); }
+  #shopify-section-{{ section.id }} .smh__tool { position: relative; display: flex; align-items: center; gap: 7px; min-height: 40px; color: var(--sm-ink); }
+  #shopify-section-{{ section.id }} .smh__tool:hover { color: var(--sm-green); }
+  #shopify-section-{{ section.id }} .smh__tool-label { display: block; font-size: 11px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .smh__count { position: absolute; top: 0; left: 17px; min-width: 16px; height: 16px; padding: 0 3px; display: grid; place-items: center; border: 2px solid #fff; border-radius: 100px; background: var(--sm-green); color: #fff; font-size: 9px; font-weight: 800; line-height: 1; }
+  #shopify-section-{{ section.id }} .smh__nav-row { border-bottom: 1px solid var(--sm-line); background: #fff; }
+  #shopify-section-{{ section.id }} .smh__nav { max-width: 1440px; min-height: 48px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 42px); display: flex; align-items: stretch; gap: clamp(20px, 2.7vw, 42px); overflow-x: auto; scrollbar-width: none; }
+  #shopify-section-{{ section.id }} .smh__nav::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .smh__nav-link { position: relative; display: flex; align-items: center; min-height: 54px; color: #31413a; font-size: {{ section.settings.nav_font_size }}px; font-weight: 750; letter-spacing: .01em; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .smh__nav-link:after { position: absolute; right: 0; bottom: 0; left: 0; height: 3px; content: ''; background: var(--sm-green); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+  #shopify-section-{{ section.id }} .smh__nav-link:hover, #shopify-section-{{ section.id }} .smh__nav-link[aria-current="page"] { color: var(--sm-green); }
+  #shopify-section-{{ section.id }} .smh__nav-link:hover:after, #shopify-section-{{ section.id }} .smh__nav-link[aria-current="page"]:after { transform: scaleX(1); }
+  #shopify-section-{{ section.id }} .smh__mobile-toggle { display: none; width: 36px; height: 36px; padding: 7px; border: 0; background: none; color: var(--sm-ink); cursor: pointer; }
+  #shopify-section-{{ section.id }} .smh__drawer { display: none; }
+  #shopify-section-{{ section.id }} .smh--sticky { position: sticky; top: 0; z-index: 12; box-shadow: 0 5px 19px rgba(19, 58, 43, 0); transition: box-shadow .2s ease; }
+  #shopify-section-{{ section.id }} .smh--sticky.is-stuck { box-shadow: 0 5px 19px rgba(19, 58, 43, .12); }
+  @media screen and (max-width: 989px) { #shopify-section-{{ section.id }} .smh__wrap { min-height: 68px; grid-template-columns: auto auto minmax(100px, 1fr) auto; column-gap: 14px; } #shopify-section-{{ section.id }} .smh__mobile-toggle { display: grid; place-items: center; } #shopify-section-{{ section.id }} .smh__logo { max-width: 135px; } #shopify-section-{{ section.id }} .smh__search { justify-self: stretch; } #shopify-section-{{ section.id }} .smh__tool-label { display: none; } #shopify-section-{{ section.id }} .smh__tools { gap: 10px; } #shopify-section-{{ section.id }} .smh__nav-row { display: none; } #shopify-section-{{ section.id }} .smh__drawer { position: absolute; top: 100%; left: 0; right: 0; max-height: calc(100vh - 70px); overflow-y: auto; padding: 6px 20px 20px; border-top: 1px solid var(--sm-line); border-bottom: 1px solid var(--sm-line); background: #fff; box-shadow: 0 14px 24px rgba(19,58,43,.14); } #shopify-section-{{ section.id }} .smh__drawer.is-open { display: block; } #shopify-section-{{ section.id }} .smh__drawer-link { display: block; padding: 15px 0; border-bottom: 1px solid var(--sm-line); font-size: 14px; font-weight: 750; } }
+  @media screen and (max-width: 639px) { #shopify-section-{{ section.id }} .smh__announcement { min-height: 31px; padding: 6px 12px; font-size: 10px; } #shopify-section-{{ section.id }} .smh__wrap { min-height: 62px; padding: 8px 12px; grid-template-columns: 32px 1fr auto; gap: 9px; } #shopify-section-{{ section.id }} .smh__brand { min-width: 0; } #shopify-section-{{ section.id }} .smh__logo { max-width: 108px; } #shopify-section-{{ section.id }} .smh__wordmark { font-size: 20px; } #shopify-section-{{ section.id }} .smh__search { position: static; grid-column: 1 / -1; grid-row: 2; width: 100%; } #shopify-section-{{ section.id }} .smh__search-form { height: 40px; } #shopify-section-{{ section.id }} .smh__search-submit { width: 31px; height: 31px; } #shopify-section-{{ section.id }} .smh__predictive { position: absolute; top: calc(100% + 4px); left: 12px; right: 12px; } #shopify-section-{{ section.id }} .smh__tools { gap: 4px; } #shopify-section-{{ section.id }} .smh__tool { width: 34px; justify-content: center; } #shopify-section-{{ section.id }} .smh__account, #shopify-section-{{ section.id }} .smh__wishlist { display: none; } #shopify-section-{{ section.id }} .smh__count { left: 20px; } }
+{% endstyle %}
+
+<header class="smh{% if section.settings.sticky_header %} smh--sticky{% endif %}" data-sm-header>
+  {% if section.settings.show_announcement and section.blocks.size > 0 %}
+    <div class="smh__announcement" role="region" aria-label="Announcement">
+      {% for block in section.blocks limit: 1 %}
+        {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</a>{% else %}<p {{ block.shopify_attributes }}>{{ block.settings.text }}</p>{% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="smh__main">
+    <div class="smh__wrap">
+      <button class="smh__mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-sm-menu-toggle>
+        <svg class="smh__svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+      </button>
+      <a class="smh__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: 400 | image_tag: class: 'smh__logo', alt: sm_logo_alt, widths: '100,140,180,240,320,400' }}
+        {% else %}
+          <span class="smh__wordmark">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <div class="smh__search" data-sm-search>
+        <form class="smh__search-form" action="{{ routes.search_url }}" method="get" role="search">
+          <input class="smh__search-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products, brands and more" autocomplete="off" aria-label="Search products" data-sm-search-input>
+          <input type="hidden" name="options[prefix]" value="last">
+          <button class="smh__search-submit" type="submit" aria-label="Search"><svg class="smh__svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 4.3 4.3"/></svg></button>
+        </form>
+        <div class="smh__predictive" role="status" aria-live="polite" data-sm-search-results></div>
+      </div>
+
+      <div class="smh__tools">
+        {% if shop.customer_accounts_enabled %}<a class="smh__tool smh__account" href="{{ routes.account_url }}" aria-label="Account"><svg class="smh__svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 21c.8-4 3.4-6 7.5-6s6.7 2 7.5 6"/></svg><span class="smh__tool-label">Account</span></a>{% endif %}
+        {% if section.settings.show_wishlist %}<a class="smh__tool smh__wishlist" href="{{ sm_wishlist_url }}" aria-label="Wishlist"><svg class="smh__svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.3c0 5-8.8 10.7-8.8 10.7S3.2 13.3 3.2 8.3A4.6 4.6 0 0 1 12 6.4a4.6 4.6 0 0 1 8.8 1.9Z"/></svg><span class="smh__tool-label">Wishlist</span></a>{% endif %}
+        <a class="smh__tool smh__cart" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items"><svg class="smh__svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9.5" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="smh__tool-label">Cart</span>{% if cart.item_count > 0 %}<span class="smh__count" aria-hidden="true">{{ cart.item_count }}</span>{% endif %}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="smh__nav-row">
+    <nav class="smh__nav" aria-label="Main navigation">
+      {% for link in sm_menu.links %}<a class="smh__nav-link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>{% endfor %}
+    </nav>
+  </div>
+  <nav class="smh__drawer" aria-label="Mobile navigation" data-sm-drawer>
+    {% for link in sm_menu.links %}<a class="smh__drawer-link" href="{{ link.url }}">{{ link.title }}</a>{% endfor %}
+  </nav>
+</header>
+
+<script>
+  (() => {
+    const header = document.querySelector('#shopify-section-{{ section.id }} [data-sm-header]');
+    if (!header || header.dataset.ready) return;
+    header.dataset.ready = 'true';
+    const toggle = header.querySelector('[data-sm-menu-toggle]');
+    const drawer = header.querySelector('[data-sm-drawer]');
+    const search = header.querySelector('[data-sm-search]');
+    const input = header.querySelector('[data-sm-search-input]');
+    const results = header.querySelector('[data-sm-search-results]');
+    let debounce;
+    const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
+    const money = (price) => new Intl.NumberFormat('{{ request.locale.iso_code }}', { style: 'currency', currency: '{{ shop.currency }}' }).format(price / 100);
+    const closeResults = () => results.classList.remove('is-open');
+    if (toggle && drawer) toggle.addEventListener('click', () => { const open = drawer.classList.toggle('is-open'); toggle.setAttribute('aria-expanded', String(open)); });
+    if (input && results) {
+      input.addEventListener('input', () => {
+        window.clearTimeout(debounce);
+        const term = input.value.trim();
+        if (term.length < 2) { closeResults(); results.innerHTML = ''; return; }
+        debounce = window.setTimeout(async () => {
+          results.innerHTML = '<div class="smh__search-status">Searching…</div>'; results.classList.add('is-open');
+          try {
+            const url = '{{ routes.predictive_search_url }}?q=' + encodeURIComponent(term) + '&resources[type]=product,collection,article,page&resources[limit]=5&resources[options][unavailable_products]=hide';
+            const response = await fetch(url, { headers: { Accept: 'application/json' } });
+            if (!response.ok) throw new Error('Search request failed');
+            const data = await response.json(); const resources = data.resources && data.resources.results ? data.resources.results : {};
+            let markup = ''; let total = 0;
+            ['products', 'collections', 'articles', 'pages'].forEach(type => {
+              const entries = resources[type] || []; if (!entries.length) return; total += entries.length;
+              const label = { products: 'Products', collections: 'Collections', articles: 'Articles', pages: 'Pages' }[type];
+              markup += '<h3 class="smh__result-heading">' + label + '</h3>';
+              entries.forEach(item => { const image = item.image || (item.featured_image && item.featured_image.url) || ''; const price = item.price ? '<span class="smh__result-price">' + money(item.price) + '</span>' : ''; markup += '<a class="smh__result" href="' + escapeHtml(item.url) + '">' + (image ? '<img class="smh__result-image" src="' + escapeHtml(image) + '&width=96" alt="" loading="lazy">' : '') + '<span><span class="smh__result-title">' + escapeHtml(item.title) + '</span>' + price + '</span></a>'; });
+            });
+            results.innerHTML = total ? markup + '<a class="smh__view-all" href="{{ routes.search_url }}?q=' + encodeURIComponent(term) + '">View all results for “' + escapeHtml(term) + '”</a>' : '<div class="smh__search-status">No results found for “' + escapeHtml(term) + '”.</div>';
+          } catch (error) { results.innerHTML = '<div class="smh__search-status">Unable to load suggestions. Please press Enter to search.</div>'; }
+        }, 250);
+      });
+      document.addEventListener('click', event => { if (!search.contains(event.target)) closeResults(); });
+      input.addEventListener('keydown', event => { if (event.key === 'Escape') { closeResults(); input.blur(); } });
+    }
+    if (header.classList.contains('smh--sticky')) { const update = () => header.classList.toggle('is-stuck', window.scrollY > 8); update(); window.addEventListener('scroll', update, { passive: true }); }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SM premium header",
+  "tag": "section",
+  "class": "section-sm-header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "range", "id": "logo_width", "min": 80, "max": 240, "step": 5, "default": 145, "label": "Logo width" },
+    { "type": "link_list", "id": "menu", "label": "Main navigation" },
+    { "type": "range", "id": "nav_font_size", "min": 12, "max": 20, "step": 1, "default": 15, "label": "Navigation text size" },
+    { "type": "checkbox", "id": "sticky_header", "default": true, "label": "Enable sticky header" },
+    { "type": "checkbox", "id": "show_announcement", "default": true, "label": "Show announcement bar" },
+    { "type": "checkbox", "id": "show_wishlist", "default": true, "label": "Show wishlist" },
+    { "type": "url", "id": "wishlist_url", "label": "Wishlist page link" },
+    { "type": "color", "id": "green", "default": "#00845D", "label": "Primary green" }
+  ],
+  "blocks": [
+    { "type": "announcement", "name": "Announcement", "limit": 1, "settings": [
+      { "type": "text", "id": "text", "default": "Free delivery on orders over ₹999", "label": "Text" },
+      { "type": "url", "id": "link", "label": "Link" }
+    ] }
+  ],
+  "presets": [{ "name": "SM premium header", "blocks": [{ "type": "announcement" }] }]
+}
+{% endschema %}

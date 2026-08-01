@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "hero_banner": {
+      "type": "sm-hero-banner",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "show_buttons": true,
+        "show_trust_badges": true,
+        "desktop_height": 640,
+        "tablet_height": 560,
+        "mobile_height": 700
+      }
+    },
+
+    "category_icons": {
+      "type": "sm-category-icons",
+      "settings": {
+        "heading": "Shop by Category",
+        "desktop_columns": 8,
+        "icon_size": 130,
+        "background": "#FFFFFF",
+        "text_color": "#17221E",
+        "accent_color": "#00845D",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "mobile_padding_top": 24,
+        "mobile_padding_bottom": 24
+      }
+    },
+
+    "flash_deals": {
+      "type": "sm-flash-deals",
+      "settings": {
+        "heading": "Flash Deals",
+        "subtitle": "Limited Time Offers",
+        "products_to_show": 8,
+        "countdown_end_date": "2026-12-31T23:59:59",
+        "color_scheme": "scheme-1",
+        "button_label": "View All Deals"
+      }
+    },
+
+    "featured_products": {
+      "type": "sm-featured-products",
+      "settings": {
+        "heading": "Featured Products",
+        "subtitle": "Handpicked for you",
+        "products_to_show": 8,
+        "show_vendor": false,
+        "show_rating": true,
+        "show_sale_badge": true,
+        "show_button": true,
+        "button_label": "View All Products",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+
+    "why_sarvada": {
+      "type": "sm-why-sarvada",
+      "settings": {
+        "heading": "Why Choose SarvadaMart",
+        "subtitle": "Shopping made simple, secure and reliable",
+        "color_scheme": "scheme-1",
+        "background_style": "plain",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+
+  "order": [
+    "hero_banner",
+    "category_icons",
+    "flash_deals",
+    "featured_products",
+    "why_sarvada"
+  ]
+}

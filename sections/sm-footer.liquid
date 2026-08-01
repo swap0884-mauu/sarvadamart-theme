@@ -1,0 +1,292 @@
+{{ 'sm-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sm-footer.js' | asset_url }}" defer="defer"></script>
+
+{%- capture newsletter_id -%}
+  SMFooterNewsletter-{{ section.id }}
+{%- endcapture -%}
+
+<footer
+  id="SMFooter-{{ section.id }}"
+  class="sm-footer color-{{ section.settings.color_scheme }} gradient"
+  data-padding-top="{{ section.settings.padding_top }}"
+  data-padding-bottom="{{ section.settings.padding_bottom }}"
+>
+  <div class="page-width">
+    <div class="sm-footer__grid">
+      <div class="sm-footer__column sm-footer__column--brand">
+        {%- if section.settings.logo != blank -%}
+          <a class="sm-footer__logo-link" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+            {{
+              section.settings.logo
+              | image_url: width: 320
+              | image_tag:
+                loading: 'lazy',
+                widths: '120, 180, 240, 320',
+                sizes: '160px',
+                class: 'sm-footer__logo',
+                alt: section.settings.logo.alt
+            }}
+          </a>
+        {%- endif -%}
+
+        <p class="sm-footer__store-name">{{ section.settings.store_name | default: shop.name | escape }}</p>
+
+        {%- if section.settings.about_text != blank -%}
+          <div class="sm-footer__about rte">
+            {{ section.settings.about_text }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_social_icons -%}
+          <ul class="sm-footer__social-list list-unstyled" role="list">
+            {%- if settings.social_facebook_link != blank -%}
+              <li>
+                <a class="sm-footer__social-link" href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="currentColor" d="M13.8 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5H17V3.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8V10H8.6v3h2.5v8h2.7Z"/></svg>
+                  <span class="visually-hidden">Facebook</span>
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- if settings.social_instagram_link != blank -%}
+              <li>
+                <a class="sm-footer__social-link" href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+                  <span class="visually-hidden">Instagram</span>
+                </a>
+              </li>
+            {%- endif -%}
+
+            {%- if settings.social_youtube_link != blank -%}
+              <li>
+                <a class="sm-footer__social-link" href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.6 4.6 12 4.6 12 4.6s-5.6 0-7.5.5a3 3 0 0 0-2.1 2.1C2 9.1 2 12 2 12s0 2.9.4 4.8a3 3 0 0 0 2.1 2.1c1.9.5 7.5.5 7.5.5s5.6 0 7.5-.5a3 3 0 0 0 2.1-2.1c.4-1.9.4-4.8.4-4.8s0-2.9-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+                  <span class="visually-hidden">YouTube</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.show_contact -%}
+          <address class="sm-footer__contact">
+            {%- if section.settings.address != blank -%}
+              <p>{{ section.settings.address | newline_to_br }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.phone != blank -%}
+              <p><a href="tel:{{ section.settings.phone | remove: ' ' | escape }}">{{ section.settings.phone | escape }}</a></p>
+            {%- endif -%}
+
+            {%- if section.settings.email != blank -%}
+              <p><a href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></p>
+            {%- endif -%}
+          </address>
+        {%- endif -%}
+      </div>
+
+      <nav class="sm-footer__column" aria-labelledby="SMFooterQuickLinks-{{ section.id }}">
+        <h2 id="SMFooterQuickLinks-{{ section.id }}" class="sm-footer__heading">Quick Links</h2>
+
+        {%- if section.settings.quick_links != blank -%}
+          <ul class="sm-footer__menu list-unstyled">
+            {%- for link in section.settings.quick_links.links -%}
+              <li>
+                <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </nav>
+
+      <nav class="sm-footer__column" aria-labelledby="SMFooterSupportLinks-{{ section.id }}">
+        <h2 id="SMFooterSupportLinks-{{ section.id }}" class="sm-footer__heading">Customer Support</h2>
+
+        {%- if section.settings.support_links != blank -%}
+          <ul class="sm-footer__menu list-unstyled">
+            {%- for link in section.settings.support_links.links -%}
+              <li>
+                <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </nav>
+
+      {%- if section.settings.show_newsletter -%}
+        <div class="sm-footer__column sm-footer__column--newsletter">
+          <h2 class="sm-footer__heading">{{ section.settings.newsletter_heading | escape }}</h2>
+
+          {%- if section.settings.newsletter_description != blank -%}
+            <p class="sm-footer__newsletter-description">{{ section.settings.newsletter_description | escape }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', id: newsletter_id, class: 'sm-footer__newsletter-form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+
+            <div class="sm-footer__newsletter-field">
+              <label class="visually-hidden" for="SMFooterEmail-{{ section.id }}">Email address</label>
+              <input
+                id="SMFooterEmail-{{ section.id }}"
+                class="sm-footer__email-input"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                placeholder="Your email address"
+                required
+              >
+              <button class="sm-footer__subscribe-button button" type="submit" name="commit">Subscribe</button>
+            </div>
+
+            {%- if form.errors -%}
+              <small class="sm-footer__form-message sm-footer__form-message--error" role="alert">
+                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+              </small>
+            {%- endif -%}
+
+            {%- if form.posted_successfully? -%}
+              <small class="sm-footer__form-message" role="status">Thank you for subscribing.</small>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="sm-footer__bottom">
+      <p class="sm-footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ section.settings.store_name | default: shop.name | escape }}. All rights reserved.
+      </p>
+
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="sm-footer__payment-icons list-unstyled" role="list">
+          {%- for type in shop.enabled_payment_types -%}
+            <li class="sm-footer__payment-icon">
+              {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "SM Footer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store name"
+    },
+    {
+      "type": "richtext",
+      "id": "about_text",
+      "label": "About text",
+      "default": "<p>Your trusted destination for quality products and everyday essentials.</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links",
+      "label": "Quick links menu"
+    },
+    {
+      "type": "link_list",
+      "id": "support_links",
+      "label": "Customer support menu"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_description",
+      "label": "Newsletter description",
+      "default": "Subscribe for exclusive offers, new arrivals and updates."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Show contact information",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SM Footer"
+    }
+  ]
+}
+{% endschema %}

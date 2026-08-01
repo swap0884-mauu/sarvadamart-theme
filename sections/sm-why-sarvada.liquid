@@ -1,0 +1,193 @@
+{{ 'sm-why-sarvada.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sm-why-sarvada.js' | asset_url }}" defer="defer"></script>
+
+<section
+  id="SMWhySarvada-{{ section.id }}"
+  class="sm-why-sarvada sm-why-sarvada--{{ section.settings.background_style }} color-{{ section.settings.color_scheme }} gradient"
+  data-padding-top="{{ section.settings.padding_top }}"
+  data-padding-bottom="{{ section.settings.padding_bottom }}"
+  aria-labelledby="SMWhySarvadaHeading-{{ section.id }}"
+>
+  <div class="page-width">
+    <header class="sm-why-sarvada__header">
+      {%- if section.settings.subtitle != blank -%}
+        <p class="sm-why-sarvada__subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 id="SMWhySarvadaHeading-{{ section.id }}" class="sm-why-sarvada__heading inline-richtext">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+    </header>
+
+    <ul class="sm-why-sarvada__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="sm-why-sarvada__item" {{ block.shopify_attributes }}>
+          <article class="sm-why-sarvada__card">
+            <div class="sm-why-sarvada__icon-wrapper">
+              {%- if block.settings.icon != blank -%}
+                {{
+                  block.settings.icon
+                  | image_url: width: 160
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '80, 120, 160',
+                    sizes: '80px',
+                    class: 'sm-why-sarvada__icon',
+                    alt: block.settings.icon.alt
+                }}
+              {%- else -%}
+                <svg class="sm-why-sarvada__icon-placeholder" aria-hidden="true" focusable="false" viewBox="0 0 48 48">
+                  <path d="M24 4 7 11v11c0 10.8 7.2 20.8 17 23 9.8-2.2 17-12.2 17-23V11L24 4Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="3"/>
+                  <path d="m16 24 5 5 11-11" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+                </svg>
+              {%- endif -%}
+            </div>
+
+            <div class="sm-why-sarvada__content">
+              {%- if block.settings.title != blank -%}
+                <h3 class="sm-why-sarvada__title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <div class="sm-why-sarvada__description rte">
+                  {{ block.settings.description }}
+                </div>
+              {%- endif -%}
+            </div>
+          </article>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SM Why Sarvada",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose SarvadaMart"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Shopping made simple, secure and reliable"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "background_style",
+      "label": "Background style",
+      "options": [
+        {
+          "value": "plain",
+          "label": "Plain"
+        },
+        {
+          "value": "soft",
+          "label": "Soft"
+        },
+        {
+          "value": "gradient",
+          "label": "Gradient"
+        }
+      ],
+      "default": "plain"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Trusted quality"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Quality products selected for your everyday needs.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SM Why Sarvada",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Trusted Quality",
+            "description": "<p>Carefully selected products you can rely on.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Secure Payments",
+            "description": "<p>Safe and secure checkout for every order.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Fast Delivery",
+            "description": "<p>Quick and reliable delivery to your doorstep.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Easy Returns",
+            "description": "<p>Simple returns for a worry-free experience.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

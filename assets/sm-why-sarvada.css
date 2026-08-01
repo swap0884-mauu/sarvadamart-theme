@@ -1,0 +1,167 @@
+/* Section */
+.sm-why-sarvada {
+  --sm-why-primary: #2e7d32;
+  --sm-why-secondary: #4caf50;
+  --sm-why-heading: #1f2937;
+  --sm-why-body: #6b7280;
+  --sm-why-border: #e5e7eb;
+  --sm-why-surface: #ffffff;
+  background: #ffffff;
+  padding: 64px 0;
+}
+
+.sm-why-sarvada__header {
+  margin: 0 auto 36px;
+  max-width: 720px;
+  text-align: center;
+}
+
+.sm-why-sarvada__subtitle {
+  color: var(--sm-why-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.sm-why-sarvada__heading {
+  color: var(--sm-why-heading);
+  font-size: clamp(2.8rem, 4vw, 4.4rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.sm-why-sarvada--soft {
+  background: #f8fbf8;
+}
+
+.sm-why-sarvada--gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #f3faf4 100%);
+}
+
+/* Grid */
+.sm-why-sarvada__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sm-why-sarvada__item {
+  min-width: 0;
+}
+
+/* Card */
+.sm-why-sarvada__card {
+  align-items: center;
+  background: var(--sm-why-surface);
+  border: 1px solid var(--sm-why-border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 16px;
+  text-align: center;
+  transition: border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+}
+
+.sm-why-sarvada__card:hover {
+  border-color: var(--sm-why-secondary);
+  box-shadow: 0 14px 30px rgba(31, 41, 55, 0.12);
+  transform: translateY(-6px);
+}
+
+/* Icon */
+.sm-why-sarvada__icon-wrapper {
+  align-items: center;
+  background: var(--sm-why-primary);
+  border-radius: 50%;
+  color: #ffffff;
+  display: flex;
+  flex: 0 0 auto;
+  height: 64px;
+  justify-content: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+  transition: background-color 300ms ease, transform 300ms ease;
+  width: 64px;
+}
+
+.sm-why-sarvada__card:hover .sm-why-sarvada__icon-wrapper {
+  background: var(--sm-why-secondary);
+  transform: scale(1.1);
+}
+
+.sm-why-sarvada__icon,
+.sm-why-sarvada__icon-placeholder {
+  display: block;
+  height: 32px;
+  max-width: 32px;
+  object-fit: contain;
+  width: 32px;
+}
+
+.sm-why-sarvada__icon {
+  filter: brightness(0) invert(1);
+}
+
+/* Content */
+.sm-why-sarvada__content {
+  width: 100%;
+}
+
+.sm-why-sarvada__title {
+  color: var(--sm-why-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0 0 10px;
+}
+
+.sm-why-sarvada__description {
+  color: var(--sm-why-body);
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
+
+.sm-why-sarvada__description > * {
+  margin: 0;
+}
+
+.sm-why-sarvada :focus-visible {
+  outline: 3px solid var(--sm-why-primary);
+  outline-offset: 4px;
+}
+
+/* Responsive */
+@media screen and (min-width: 750px) {
+  .sm-why-sarvada {
+    padding: 80px 0;
+  }
+
+  .sm-why-sarvada__grid {
+    gap: 24px;
+  }
+
+  .sm-why-sarvada__card {
+    padding: 24px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .sm-why-sarvada__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-why-sarvada *,
+  .sm-why-sarvada *::before,
+  .sm-why-sarvada *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
